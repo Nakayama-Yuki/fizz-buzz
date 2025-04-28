@@ -1,103 +1,168 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+
+/**
+ * FizzBuzzアプリケーション
+ * ルール：
+ * 1. 3の倍数でなく、5の倍数でもないときは整数をそのまま出力
+ * 2. 3の倍数であり、5の倍数でないときはFizzを出力
+ * 3. 3の倍数でなく、5の倍数であるときはBuzzを出力
+ * 4. 3の倍数であり、5の倍数でもあるときはFizzBuzzを出力
+ */
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // 開始値と終了値のステート
+  const [startNumber, setStartNumber] = useState<number>(1);
+  const [endNumber, setEndNumber] = useState<number>(100);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  /**
+   * FizzBuzzのロジックを適用する関数
+   * @param num 判定する数値
+   * @returns FizzBuzz判定結果
+   */
+  function getFizzBuzzResult(num: number): string {
+    if (num % 3 === 0 && num % 5 === 0) return "FizzBuzz";
+    if (num % 3 === 0) return "Fizz";
+    if (num % 5 === 0) return "Buzz";
+    return num.toString();
+  }
+
+  /**
+   * 指定された範囲のFizzBuzz結果を生成する
+   * @returns FizzBuzz結果の配列
+   */
+  function generateFizzBuzzResults(): { number: number; result: string }[] {
+    const results = [];
+    const start = Math.min(startNumber, endNumber);
+    const end = Math.max(startNumber, endNumber);
+
+    // 1000件以上の結果は処理が重くなるため制限
+    const limit = Math.min(end, start + 1000);
+
+    for (let i = start; i <= limit; i++) {
+      results.push({
+        number: i,
+        result: getFizzBuzzResult(i),
+      });
+    }
+
+    return results;
+  }
+
+  // 入力値が変更されたときのハンドラー
+  const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    setStartNumber(isNaN(value) ? 1 : value);
+  };
+
+  const handleEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    setEndNumber(isNaN(value) ? 100 : value);
+  };
+
+  // FizzBuzz結果の生成
+  const fizzBuzzResults = generateFizzBuzzResults();
+
+  return (
+    <main className="max-w-4xl mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">FizzBuzz</h1>
+
+      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg mb-6">
+        <p className="mb-4">ルール:</p>
+        <ul className="list-disc pl-6 space-y-1">
+          <li>3の倍数でなく、5の倍数でもないときは整数をそのまま出力</li>
+          <li>3の倍数であり、5の倍数でないときは「Fizz」を出力</li>
+          <li>3の倍数でなく、5の倍数であるときは「Buzz」を出力</li>
+          <li>3の倍数であり、5の倍数でもあるときは「FizzBuzz」を出力</li>
+        </ul>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex-1">
+          <label htmlFor="start-number" className="block mb-2">
+            開始値:
+          </label>
+          <input
+            id="start-number"
+            type="number"
+            value={startNumber}
+            onChange={handleStartChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            aria-label="開始値"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div className="flex-1">
+          <label htmlFor="end-number" className="block mb-2">
+            終了値:
+          </label>
+          <input
+            id="end-number"
+            type="number"
+            value={endNumber}
+            onChange={handleEndChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            aria-label="終了値"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </div>
+      </div>
+
+      <div className="overflow-auto max-h-[60vh] border border-gray-200 rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                数値
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                結果
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200">
+            {fizzBuzzResults.map(({ number, result }) => (
+              <tr
+                key={number}
+                className={
+                  result !== number.toString()
+                    ? "bg-blue-50 dark:bg-blue-900/20"
+                    : ""
+                }>
+                <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  {number}
+                </td>
+                <td className="px-6 py-2 whitespace-nowrap text-sm">
+                  <span
+                    className={`
+                    px-2 py-1 rounded 
+                    ${
+                      result === "Fizz"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                        : ""
+                    }
+                    ${
+                      result === "Buzz"
+                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300"
+                        : ""
+                    }
+                    ${
+                      result === "FizzBuzz"
+                        ? "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
+                        : ""
+                    }
+                  `}>
+                    {result}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </main>
   );
 }
