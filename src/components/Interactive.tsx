@@ -97,49 +97,61 @@ export default function Interactive() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
-        <div className="flex-1">
-          <label htmlFor="start-number" className="block mb-2">
-            開始値:
-          </label>
-          <input
-            id="start-number"
-            type="number"
-            value={startNumber}
-            onChange={handleStartChange}
-            min="1"
-            step="1"
-            className={`w-full p-2 border rounded ${
-              startError ? "border-red-500" : "border-gray-300"
-            }`}
-            aria-label="開始値"
-            aria-describedby={startError ? "start-error" : undefined}
-          />
+      {/* 入力フォーム - コンパクトな横並びレイアウト */}
+      <div className="mb-4">
+        <div className="flex flex-wrap items-end gap-4 mb-2">
+          <div className="w-auto min-w-[120px]">
+            <label
+              htmlFor="start-number"
+              className="block mb-1 text-sm font-medium">
+              開始値:
+            </label>
+            <input
+              id="start-number"
+              type="number"
+              value={startNumber}
+              onChange={handleStartChange}
+              min="1"
+              step="1"
+              className={`w-24 p-2 border rounded ${
+                startError ? "border-red-500" : "border-gray-300"
+              }`}
+              aria-label="開始値"
+              aria-describedby={startError ? "start-error" : undefined}
+            />
+          </div>
+
+          <div className="w-auto min-w-[120px]">
+            <label
+              htmlFor="end-number"
+              className="block mb-1 text-sm font-medium">
+              終了値:
+            </label>
+            <input
+              id="end-number"
+              type="number"
+              value={endNumber}
+              onChange={handleEndChange}
+              min="1"
+              step="1"
+              className={`w-24 p-2 border rounded ${
+                endError ? "border-red-500" : "border-gray-300"
+              }`}
+              aria-label="終了値"
+              aria-describedby={endError ? "end-error" : undefined}
+            />
+          </div>
+        </div>
+
+        {/* エラーメッセージ表示 */}
+        <div className="space-y-1">
           {startError && (
-            <p id="start-error" className="mt-1 text-sm text-red-600">
+            <p id="start-error" className="text-sm text-red-600">
               {startError}
             </p>
           )}
-        </div>
-        <div className="flex-1">
-          <label htmlFor="end-number" className="block mb-2">
-            終了値:
-          </label>
-          <input
-            id="end-number"
-            type="number"
-            value={endNumber}
-            onChange={handleEndChange}
-            min="1"
-            step="1"
-            className={`w-full p-2 border rounded ${
-              endError ? "border-red-500" : "border-gray-300"
-            }`}
-            aria-label="終了値"
-            aria-describedby={endError ? "end-error" : undefined}
-          />
           {endError && (
-            <p id="end-error" className="mt-1 text-sm text-red-600">
+            <p id="end-error" className="text-sm text-red-600">
               {endError}
             </p>
           )}
