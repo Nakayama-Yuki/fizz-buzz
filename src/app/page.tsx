@@ -1,4 +1,4 @@
-import FizzBuzzInteractive from "@/components/FizzBuzzInteractive";
+import FizzBuzzInteractive from "@/components/Interactive";
 
 /**
  * FizzBuzzアプリケーションのメインページ

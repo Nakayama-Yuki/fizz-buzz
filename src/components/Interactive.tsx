@@ -7,7 +7,7 @@ import { generateFizzBuzzResults } from "@/utils/fizzBuzz";
  * FizzBuzzのインタラクティブなコンポーネント
  * ユーザーが開始値と終了値を入力し、FizzBuzzの結果を表示する
  */
-export default function FizzBuzzInteractive() {
+export default function Interactive() {
   // 開始値と終了値のステート
   const [startNumber, setStartNumber] = useState<number>(1);
   const [endNumber, setEndNumber] = useState<number>(100);
