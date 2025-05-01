@@ -10,7 +10,7 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6">FizzBuzz</h1>
 
       {/* FizzBuzzのルール */}
-      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg mb-4">
+      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg mb-4 relative ">
         <div className="flex items-center gap-2 mb-2">
           <h2 className="text-xl font-semibold">ルール</h2>
           {/* popoverで注意事項を表示する */}
@@ -22,13 +22,9 @@ export default function Home() {
           </button>
           <div
             id="mypopover"
+            role="tooltip"
             popover="auto"
-            className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 max-w-xs"
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-            }}>
+            className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 max-w-xs relative top-25 left-30">
             <h3 className="font-semibold text-amber-600 dark:text-amber-500 mb-2">
               注意事項:
             </h3>
