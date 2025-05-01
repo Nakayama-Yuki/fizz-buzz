@@ -10,7 +10,8 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6">FizzBuzz</h1>
 
       {/* FizzBuzzのルール */}
-      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg mb-4 relative ">
+      {/* ↓を基準にして、ポップオーバーを相対的な位置指定したいけど、うまくいかなかった */}
+      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg mb-4 rerelative">
         <div className="flex items-center gap-2 mb-2">
           <h2 className="text-xl font-semibold">ルール</h2>
           {/* popoverで注意事項を表示する */}
